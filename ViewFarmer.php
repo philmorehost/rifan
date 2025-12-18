@@ -71,7 +71,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 						<input hidden readonly type="text" name="id" value="1"
 							class="form-control" required>
 						<input id="search-input" type="text" name="search" value="<?php echo $search_text; ?>" class="form-control"
-							placeholder="Search..." onkeyup="debounce(submitForm, 500)()" required>
+							placeholder="Search..." onkeyup="debounce(submitForm, 500)()">
 					</div>
 				</div>
 			</form>
@@ -118,33 +118,43 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 							$farmer_lga = "";
 						}
 						
-						$exp_search_text = array_filter(explode("-", trim($search_text)));
-						
-						if(empty($farmer_lga)){
-						if (count($exp_search_text) > 1) {
-							$search_statement = "";
-							foreach ($exp_search_text as $value) {
-								$search_statement .= "code LIKE '%$value%' OR ";
+						$search_query_part = "";
+						if (!empty($search_text)) {
+							$exp_search_text = array_filter(explode("-", trim($search_text)));
+
+							if(empty($farmer_lga)){ // Admin search
+								if (count($exp_search_text) > 1) {
+									$search_statement = "";
+									foreach ($exp_search_text as $value) {
+										$search_statement .= "code LIKE '%$value%' OR ";
+									}
+									$search_statement = rtrim($search_statement, " OR ");
+									$search_statement = $search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
+								} else {
+									$search_statement = "code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
+								}
+							} else { // Agent search
+								if (count($exp_search_text) > 1) {
+									$search_statement = "";
+									foreach ($exp_search_text as $value) {
+										$search_statement .= "code LIKE '%$value%' OR ";
+									}
+									$search_statement = rtrim($search_statement, " OR ");
+									$search_statement = "(".$search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
+								} else {
+									$search_statement = "(code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
+								}
 							}
-							$search_statement = rtrim($search_statement, " OR ");
-							$search_statement = $search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
+							$search_query_part = " WHERE " . $search_statement;
 						} else {
-							$search_statement = "code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
-						}
-						}else{
-						if (count($exp_search_text) > 1) {
-							$search_statement = "";
-							foreach ($exp_search_text as $value) {
-								$search_statement .= "code LIKE '%$value%' OR ";
+							// If search is empty, agent still only sees their LGA
+							if (!empty($farmer_lga)) {
+								$search_query_part = " WHERE lga='$farmer_lga'";
 							}
-							$search_statement = rtrim($search_statement, " OR ");
-							$search_statement = "(".$search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
-						} else {
-							$search_statement = "(code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
 						}
-						}
-						
-						$select_farmers = mysqli_query($db_conn, "SELECT * FROM " . $db_json["farmer_table"] . " WHERE " . $search_statement . " ORDER BY date DESC LIMIT 20 OFFSET " . (($current_page - 1) * 20));
+
+						$query = "SELECT * FROM " . $db_json["farmer_table"] . $search_query_part . " ORDER BY date DESC LIMIT 20 OFFSET " . (($current_page - 1) * 20);
+						$select_farmers = mysqli_query($db_conn, $query);
 						if (mysqli_num_rows($select_farmers) >= 1) {
 							while ($get_farmer = mysqli_fetch_array($select_farmers)) {
 								echo 
