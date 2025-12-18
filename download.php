@@ -10,6 +10,7 @@ if (isset($_GET['farmers'])) {
     $query = "SELECT code, fullname, email, phone, nin, bvn, lga, farm_location, address FROM " . $db_json["farmer_table"] . " ORDER BY date DESC";
     $result = mysqli_query($db_conn, $query);
     while ($row = mysqli_fetch_assoc($result)) {
+		$row['bvn'] = substr($row["bvn"], 0, 4) . '****' . substr($row["bvn"], -2);
         fputcsv($output, $row);
     }
     fclose($output);

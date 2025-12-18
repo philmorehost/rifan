@@ -164,7 +164,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 											<td>' . $get_farmer["email"] . '</td>
 											<td>' . $get_farmer["phone"] . '</td>
 											<td>' . $get_farmer["nin"] . '</td>
-											<td>' . $get_farmer["bvn"] . '</td>
+											<td>' . substr($get_farmer["bvn"], 0, 4) . '****' . substr($get_farmer["bvn"], -2) . '</td>
 											<td>' . $get_farmer["lga"] . '</td>
 											<td>' . $get_farmer["farm_location"] . '</td>
 											<td>' . $get_farmer["address"] . '</td>

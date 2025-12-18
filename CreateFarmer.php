@@ -102,6 +102,9 @@
 		<input id="" type="text" name="nin" pattern="[0-9]{11}" title="NIN must be 11 digit" class="form-control" required>
 	</div>
 
+	<div class="alert alert-warning" role="alert">
+		<strong>Security Notice:</strong> Farmers are strictly advised to be the one to compute their BVN numbers by themselves. The Admin and the Agents should not attempt to collect the BVN number for security reasons.
+	</div>
 	<div class="input-group mb-3 mt-3">
 		<div class="input-group-prepend">
 			<span class="input-group-text">BVN number</span>

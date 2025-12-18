@@ -31,6 +31,7 @@ if (isset($_POST["edit"])) {
 	$email = mysqli_real_escape_string($db_conn, $_POST["email"]);
 	$phone = mysqli_real_escape_string($db_conn, $_POST["phone"]);
 	$nin = mysqli_real_escape_string($db_conn, $_POST["nin"]);
+	$bvn = mysqli_real_escape_string($db_conn, $_POST["bvn"]);
 	$farm_location = mysqli_real_escape_string($db_conn, $_POST["farm-location"]);
 	$address = mysqli_real_escape_string($db_conn, $_POST["address"]);
 	$lga = mysqli_real_escape_string($db_conn, $_POST["lga"]);
@@ -54,7 +55,12 @@ if (isset($_POST["edit"])) {
 				move_uploaded_file($photo_tmp, "static/farmer/" . $farmer_code . ".jpg");
 			}
 
-			mysqli_query($db_conn, "UPDATE " . $db_json["farmer_table"] . " SET fullname='$name', phone='$phone', nin='$nin', farm_location='$farm_location', address='$address', lga='$lga', photo='" . $farmer_code . ".jpg' WHERE email='$email'");
+			$bvn_update_sql = "";
+			if (!empty($bvn) && strlen($bvn) == 11) {
+				$bvn_update_sql = ", bvn='$bvn'";
+			}
+
+			mysqli_query($db_conn, "UPDATE " . $db_json["farmer_table"] . " SET fullname='$name', phone='$phone', nin='$nin', farm_location='$farm_location', address='$address', lga='$lga', photo='" . $farmer_code . ".jpg'" . $bvn_update_sql . " WHERE email='$email'");
 			$msg = '<div class="p-2 bg-secondary text-white rounded-1">Update successful, AGENT CODE: ' . strtoupper($lga) . '-' . strtoupper($farmer_code) . '</div>';
 		} else {
 			$msg = '<div class="p-2 bg-danger text-white rounded-1">Agent not exists! or Email might be taken</div>';
@@ -151,6 +157,20 @@ if (isset($_POST["edit"])) {
 						</div>
 						<input name="nin" type="text" value="<?php echo $get_farmer["nin"]; ?>" pattern="[0-9]{11}"
 							title="NIN must be 11 digit" class="form-control" required>
+					</div>
+
+					<div class="alert alert-warning" role="alert">
+						<strong>Security Notice:</strong> Farmers are strictly advised to be the one to compute their BVN numbers by themselves. The Admin and the Agents should not attempt to collect the BVN number for security reasons.
+					</div>
+					<div class="input-group mb-3 mt-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Update BVN</span>
+						</div>
+						<input name="bvn" type="text" pattern="[0-9]{11}"
+							title="BVN must be 11 digit" class="form-control">
+						<div class="input-group-append">
+							<span class="input-group-text">Optional</span>
+						</div>
 					</div>
 					
 					<div class="input-group mb-3 mt-3">
