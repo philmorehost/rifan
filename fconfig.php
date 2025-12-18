@@ -19,7 +19,13 @@
 		mysqli_query($db_conn, "CREATE TABLE IF NOT EXISTS ".$db_json["agent_table"]." (id INT NOT NULL AUTO_INCREMENT, code VARCHAR(225) NOT NULL, fullname VARCHAR(225) NOT NULL, email VARCHAR(225) NOT NULL, phone VARCHAR(225) NOT NULL, address VARCHAR(225) NOT NULL, lga VARCHAR(225) NOT NULL, photo VARCHAR(225) NOT NULL, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
 		mysqli_query($db_conn, "CREATE TABLE IF NOT EXISTS ".$db_json["farmer_table"]." (id INT NOT NULL AUTO_INCREMENT, code VARCHAR(225) NOT NULL, fullname VARCHAR(225) NOT NULL, email VARCHAR(225) NOT NULL, phone VARCHAR(225) NOT NULL, nin VARCHAR(225) NOT NULL, bvn VARCHAR(11) NOT NULL, farm_location VARCHAR(225) NOT NULL, address VARCHAR(225) NOT NULL, lga VARCHAR(225) NOT NULL, photo VARCHAR(225) NOT NULL, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
 		
-		
+		// Check if bvn column exists and add it if it doesn't
+		$result = mysqli_query($db_conn, "SHOW COLUMNS FROM `".$db_json["farmer_table"]."` LIKE 'bvn'");
+		$exists = (mysqli_num_rows($result)) ? TRUE : FALSE;
+
+		if (!$exists) {
+			mysqli_query($db_conn, "ALTER TABLE " . $db_json["farmer_table"] . " ADD COLUMN bvn VARCHAR(11) NOT NULL AFTER nin");
+		}
 		
 	}else{
 		die("Connection Error");
