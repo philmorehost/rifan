@@ -40,6 +40,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>RIFAN | View Agent</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="static/style.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
@@ -59,23 +60,36 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 
 			<h1 class="fs-5 mt-5 fw-bold">AGENTS LIST</h1>
 			<?php echo $msg; ?>
-			<form method="get">
+			<form method="get" id="search-form">
 				<div id="container" class="col-10 col-lg-4">
 					<div class="input-group input-group mb-3 mt-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text">Search</span>
 						</div>
 
-						<input hidden readonly id="" type="text" name="id" value="<?php echo $current_page; ?>"
+						<input hidden readonly type="text" name="id" value="1"
 							class="form-control" required>
-						<input id="" type="text" name="search" value="<?php echo $search_text; ?>" class="form-control"
-							required>
-						<div class="input-group-append">
-							<button type="submit" name="" class="btn btn-secondary">GO</button>
-						</div>
+						<input id="search-input" type="text" name="search" value="<?php echo $search_text; ?>" class="form-control"
+							placeholder="Search..." onkeyup="debounce(submitForm, 500)()" required>
 					</div>
 				</div>
 			</form>
+			<script>
+				let debounceTimer;
+				function debounce(callback, time) {
+					return function() {
+						clearTimeout(debounceTimer);
+						debounceTimer = setTimeout(callback, time);
+					}
+				}
+
+				function submitForm() {
+					document.getElementById('search-form').submit();
+				}
+			</script>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<a href="download.php?agents" class="btn btn-success me-md-2" target="_blank">Download All</a>
+			</div>
 			<div class="table-responsive mt-3">
 				<table class="table table-striped table-bordered align-middle caption-top">
 					<thead class="thead-dark">

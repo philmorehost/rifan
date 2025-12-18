@@ -17,7 +17,7 @@
 			mysqli_query($db_conn, "INSERT INTO ".$db_json["admin_table"]." (email) VALUES ('".$db_json["admin_email"]."')");
 		}
 		mysqli_query($db_conn, "CREATE TABLE IF NOT EXISTS ".$db_json["agent_table"]." (id INT NOT NULL AUTO_INCREMENT, code VARCHAR(225) NOT NULL, fullname VARCHAR(225) NOT NULL, email VARCHAR(225) NOT NULL, phone VARCHAR(225) NOT NULL, address VARCHAR(225) NOT NULL, lga VARCHAR(225) NOT NULL, photo VARCHAR(225) NOT NULL, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
-		mysqli_query($db_conn, "CREATE TABLE IF NOT EXISTS ".$db_json["farmer_table"]." (id INT NOT NULL AUTO_INCREMENT, code VARCHAR(225) NOT NULL, fullname VARCHAR(225) NOT NULL, email VARCHAR(225) NOT NULL, phone VARCHAR(225) NOT NULL, nin VARCHAR(225) NOT NULL, farm_location VARCHAR(225) NOT NULL, address VARCHAR(225) NOT NULL, lga VARCHAR(225) NOT NULL, photo VARCHAR(225) NOT NULL, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
+		mysqli_query($db_conn, "CREATE TABLE IF NOT EXISTS ".$db_json["farmer_table"]." (id INT NOT NULL AUTO_INCREMENT, code VARCHAR(225) NOT NULL, fullname VARCHAR(225) NOT NULL, email VARCHAR(225) NOT NULL, phone VARCHAR(225) NOT NULL, nin VARCHAR(225) NOT NULL, bvn VARCHAR(11) NOT NULL, farm_location VARCHAR(225) NOT NULL, address VARCHAR(225) NOT NULL, lga VARCHAR(225) NOT NULL, photo VARCHAR(225) NOT NULL, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
 		
 		
 		

@@ -41,6 +41,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>RIFAN | View Farmer</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="static/style.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
@@ -60,23 +61,36 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 
 			<h1 class="fs-5 mt-5 fw-bold">FARMERS LIST</h1>
 			<?php echo $msg; ?>
-			<form method="get">
+			<form method="get" id="search-form">
 				<div id="container" class="col-10 col-lg-4">
 					<div class="input-group input-group mb-3 mt-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text">Search</span>
 						</div>
 
-						<input hidden readonly id="" type="text" name="id" value="<?php echo $current_page; ?>"
+						<input hidden readonly type="text" name="id" value="1"
 							class="form-control" required>
-						<input id="" type="text" name="search" value="<?php echo $search_text; ?>" class="form-control"
-							required>
-						<div class="input-group-append">
-							<button type="submit" name="" class="btn btn-secondary">GO</button>
-						</div>
+						<input id="search-input" type="text" name="search" value="<?php echo $search_text; ?>" class="form-control"
+							placeholder="Search..." onkeyup="debounce(submitForm, 500)()" required>
 					</div>
 				</div>
 			</form>
+			<script>
+				let debounceTimer;
+				function debounce(callback, time) {
+					return function() {
+						clearTimeout(debounceTimer);
+						debounceTimer = setTimeout(callback, time);
+					}
+				}
+
+				function submitForm() {
+					document.getElementById('search-form').submit();
+				}
+			</script>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<a href="download.php?farmers" class="btn btn-success me-md-2" target="_blank">Download All</a>
+			</div>
 			<div class="table-responsive mt-3">
 				<table class="table table-striped table-bordered align-middle caption-top">
 					<thead class="thead-dark">
@@ -86,6 +100,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 							<th scope="col">Email</th>
 							<th scope="col">Phone</th>
 							<th scope="col">NIN</th>
+							<th scope="col">BVN</th>
 							<th scope="col">LGA</th>
 							<th scope="col">Farm Location</th>
 							<th scope="col">Address</th>
@@ -112,9 +127,9 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 								$search_statement .= "code LIKE '%$value%' OR ";
 							}
 							$search_statement = rtrim($search_statement, " OR ");
-							$search_statement = $search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
+							$search_statement = $search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
 						} else {
-							$search_statement = "code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
+							$search_statement = "code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR lga LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%'";
 						}
 						}else{
 						if (count($exp_search_text) > 1) {
@@ -123,9 +138,9 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 								$search_statement .= "code LIKE '%$value%' OR ";
 							}
 							$search_statement = rtrim($search_statement, " OR ");
-							$search_statement = "(".$search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
+							$search_statement = "(".$search_statement . " OR code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
 						} else {
-							$search_statement = "(code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
+							$search_statement = "(code LIKE '%$search_text%' OR fullname LIKE '%$search_text%' OR email LIKE '%$search_text%' OR phone LIKE '%$search_text%' OR nin LIKE '%$search_text%' OR bvn LIKE '%$search_text%' OR farm_location LIKE '%$search_text%' OR address LIKE '%$search_text%') AND lga='$farmer_lga'";
 						}
 						}
 						
@@ -139,6 +154,7 @@ if (!empty($get_page_search) && strlen($get_page_search) >= 1) {
 											<td>' . $get_farmer["email"] . '</td>
 											<td>' . $get_farmer["phone"] . '</td>
 											<td>' . $get_farmer["nin"] . '</td>
+											<td>' . $get_farmer["bvn"] . '</td>
 											<td>' . $get_farmer["lga"] . '</td>
 											<td>' . $get_farmer["farm_location"] . '</td>
 											<td>' . $get_farmer["address"] . '</td>
