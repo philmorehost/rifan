@@ -109,7 +109,7 @@
 		<div class="input-group-prepend">
 			<span class="input-group-text">BVN number</span>
 		</div>
-		<input id="" type="text" name="bvn" pattern="[0-9]{11}" title="BVN must be 11 digit" class="form-control" required>
+		<input id="" type="password" name="bvn" pattern="[0-9]{11}" title="BVN must be 11 digit" class="form-control" required>
 	</div>
 	
 	<div class="input-group mb-3 mt-3">

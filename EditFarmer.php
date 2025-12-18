@@ -166,7 +166,7 @@ if (isset($_POST["edit"])) {
 						<div class="input-group-prepend">
 							<span class="input-group-text">Update BVN</span>
 						</div>
-						<input name="bvn" type="text" pattern="[0-9]{11}"
+						<input name="bvn" type="password" pattern="[0-9]{11}"
 							title="BVN must be 11 digit" class="form-control">
 						<div class="input-group-append">
 							<span class="input-group-text">Optional</span>
