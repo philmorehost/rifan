@@ -1,0 +1,62 @@
+<?php
+	include_once("fconfig.php");
+	if(!isset($_SESSION["admin"])){
+		header("Location: admin-022225.php");
+	}
+	
+	
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>RIFAN | Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<style type="text/css">
+	
+	input::file-selector-button {
+		display: none;
+	}
+
+</style>
+</head>
+<body>
+
+<?php include_once("navbar.php"); ?>
+
+<center>
+<div id="container" class="col-10">
+	
+	<span style="display: block; line-height: 10px;" class="mt-5 mb-5"><h3>WELCOME BACK, ADMIN</h3> <br/> Email: <?php echo $_SESSION["admin"]; ?></span>
+	
+	<div class="col-12">
+		
+		<div class="row gap-2 my-2">
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="CreateAgent.php">Create Agent</a></button>
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewAgent.php">View Agent</a></button>
+		</div>
+		
+		
+		<div class="row gap-2 my-2">
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="CreateFarmer.php">Create Farmer</a></button>
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewFarmer.php">View Farmer</a></button>
+		</div>
+		
+		
+		<div class="row gap-2 my-2">
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="EditFarmer.php">Edit Farmer</a></button>
+			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewLga.php">View LGA</a></button>
+		</div>
+		
+		
+	</div>
+</div>
+</center>
+
+
+
+</body>
+</html>

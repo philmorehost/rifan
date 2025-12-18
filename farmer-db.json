@@ -1,0 +1,10 @@
+{
+    "server": "localhost:3306",
+    "user": "owoljtak_farmer",
+    "pass": "BPcw=iACAr#G",
+    "dbname": "owoljtak_farmer",
+    "admin_table": "admin",
+    "agent_table": "agent",
+    "farmer_table": "farmer",
+    "admin_email": "tunamania138@gmail.com"
+}
