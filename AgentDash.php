@@ -4,7 +4,10 @@
 		header("Location: agent-log-25.php");
 	}
 	
-	
+	// Get total farmers for the agent's LGA
+	$agent_lga = $_SESSION["agent_lga"];
+	$total_farmers_result = mysqli_query($db_conn, "SELECT COUNT(*) as total FROM " . $db_json["farmer_table"] . " WHERE lga = '$agent_lga'");
+	$total_farmers = mysqli_fetch_assoc($total_farmers_result)['total'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,30 +31,40 @@
 
 <?php include_once("navbar.php"); ?>
 
-<center>
-<div id="container" class="col-10">
-	
-	<span style="display: block; line-height: 10px;" class="mt-5 mb-5"><h3>WELCOME BACK, AGENT</h3> <br/> Agent Code: <?php echo strtoupper($_SESSION["agent_lga"]."-".$_SESSION["agent"]); ?></span>
-	
+<div class="container mt-5">
+	<div class="text-center mb-5">
+		<h3>WELCOME BACK, AGENT</h3>
+		<p class="text-muted">Agent Code: <?php echo strtoupper($_SESSION["agent_lga"]."-".$_SESSION["agent"]); ?></p>
+	</div>
+
+	<div class="row justify-content-center g-3 mb-5">
+		<div class="col-md-4">
+			<div class="card text-white bg-success">
+				<div class="card-body text-center">
+					<h5 class="card-title">Total Farmers</h5>
+					<p class="card-text fs-4"><?php echo $total_farmers; ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="col-12">
-		
-		<div class="row gap-2 my-2">
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="CreateFarmer.php">Create Farmer</a></button>
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewFarmer.php">View Farmer</a></button>
+		<div class="row g-2">
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="CreateFarmer.php">Create Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="ViewFarmer.php">View Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="EditFarmer.php">Edit Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="ViewLga.php">View LGA</a>
+			</div>
 		</div>
-		
-		
-		<div class="row gap-2 my-2">
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="EditFarmer.php">Edit Farmer</a></button>
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewLga.php">View LGA</a></button>
-		</div>
-		
-		
 	</div>
 </div>
-</center>
-
-
 
 </body>
 </html>

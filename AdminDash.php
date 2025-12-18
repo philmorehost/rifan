@@ -4,7 +4,13 @@
 		header("Location: admin-022225.php");
 	}
 	
-	
+	// Get total farmers
+	$total_farmers_result = mysqli_query($db_conn, "SELECT COUNT(*) as total FROM " . $db_json["farmer_table"]);
+	$total_farmers = mysqli_fetch_assoc($total_farmers_result)['total'];
+
+	// Get total agents
+	$total_agents_result = mysqli_query($db_conn, "SELECT COUNT(*) as total FROM " . $db_json["agent_table"]);
+	$total_agents = mysqli_fetch_assoc($total_agents_result)['total'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,36 +34,54 @@
 
 <?php include_once("navbar.php"); ?>
 
-<center>
-<div id="container" class="col-10">
-	
-	<span style="display: block; line-height: 10px;" class="mt-5 mb-5"><h3>WELCOME BACK, ADMIN</h3> <br/> Email: <?php echo $_SESSION["admin"]; ?></span>
-	
+<div class="container mt-5">
+	<div class="text-center mb-5">
+		<h3>WELCOME BACK, ADMIN</h3>
+		<p class="text-muted">Email: <?php echo $_SESSION["admin"]; ?></p>
+	</div>
+
+	<div class="row justify-content-center g-3 mb-5">
+		<div class="col-md-4">
+			<div class="card text-white bg-success">
+				<div class="card-body text-center">
+					<h5 class="card-title">Total Farmers</h5>
+					<p class="card-text fs-4"><?php echo $total_farmers; ?></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card text-white bg-info">
+				<div class="card-body text-center">
+					<h5 class="card-title">Total Agents</h5>
+					<p class="card-text fs-4"><?php echo $total_agents; ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="col-12">
-		
-		<div class="row gap-2 my-2">
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="CreateAgent.php">Create Agent</a></button>
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewAgent.php">View Agent</a></button>
+		<div class="row g-2">
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="CreateAgent.php">Create Agent</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="ViewAgent.php">View Agent</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="CreateFarmer.php">Create Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="ViewFarmer.php">View Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="EditFarmer.php">Edit Farmer</a>
+			</div>
+			<div class="col-md-6 d-grid">
+				<a class="btn btn-secondary p-3" href="ViewLga.php">View LGA</a>
+			</div>
 		</div>
-		
-		
-		<div class="row gap-2 my-2">
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="CreateFarmer.php">Create Farmer</a></button>
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewFarmer.php">View Farmer</a></button>
-		</div>
-		
-		
-		<div class="row gap-2 my-2">
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="EditFarmer.php">Edit Farmer</a></button>
-			<button type="button" class="btn btn-secondary col p-3"><a class="nav-link" href="ViewLga.php">View LGA</a></button>
-		</div>
-		
-		
 	</div>
 </div>
-</center>
-
-
 
 </body>
 </html>
